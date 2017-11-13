@@ -1,2 +1,2 @@
 # nodeRabbitMqMagento
-App en Node/React qui importer/exporter les commandes/orders de differentes plateformes e-commerce
+App en Node/React pour synchronisation des commandes/orders de differentes plateformes e-commerce
