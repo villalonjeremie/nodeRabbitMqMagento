@@ -1,8 +1,11 @@
+const path = require('path');
+
 module.exports = {
-  entry: ["./global.js", "./app.js"],
+  entry: ["./global.js", "./app.js", "./index.jsx"],
   output: {
-    filename: "build/bundle.js"
-  },
+    filename: 'build/bundle.js',
+    publicPath: '/src/static/'
+   },
  watch: true,
  module: {
    loaders: [
@@ -14,7 +17,7 @@ module.exports = {
 			enforce: 'pre'
 		},
 		{
-            test: [/\.js$/, /\.es6$/],
+            test: [/\.js$/, /\.es6$/, /\.jsx$/],
             exclude: /node_modules/,
             loader: 'babel-loader'
         }
