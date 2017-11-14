@@ -1,2 +1,2 @@
 # nodeRabbitMqMagento
-App en Node/React pour synchronisation des commandes/orders de differentes plateformes e-commerce
+NodeJs/ReactJs => Synchronisation des commandes/clients de differentes plateformes E-commerce avec son application mobile. 
