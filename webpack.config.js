@@ -1,10 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  entry: ["./global.js", "./app.js", "./index.jsx"],
+  entry: ["./src/js/global.js", "./src/js/app.js", "./src/jsx/index.jsx"],
   output: {
-    filename: 'build/bundle.js',
-    publicPath: '/src/static/'
+    filename: './build/bundle.js',
    },
  watch: true,
  module: {

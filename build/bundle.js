@@ -57,7 +57,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/src/static/";
+/******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 14);
@@ -996,7 +996,7 @@ var App = function (_React$Component) {
       return _react2.default.createElement(
         'p',
         null,
-        ' Hello React!'
+        ' Hello React Coucou YOYOYO coucou couo!'
       );
     }
   }]);
