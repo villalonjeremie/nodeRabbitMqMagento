@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: ["./src/js/global.js", "./src/js/app.js", "./src/jsx/index.jsx"],
+  entry: ["./src/js/global.js", "./src/js/app.js", "./src/jsx/index.jsx","./mongodb/crud.js"],
   output: {
     filename: './build/bundle.js',
    },
@@ -12,14 +12,19 @@ module.exports = {
 			test: /\.js$/,
 			exclude: /node_modules/,
 			loader: 'jshint-loader',
-			//this is similar to defining a preloader
 			enforce: 'pre'
 		},
 		{
-            test: [/\.js$/, /\.es6$/, /\.jsx$/],
-            exclude: /node_modules/,
-            loader: 'babel-loader'
-        }
+      test: [/\.js$/, /\.es6$/, /\.jsx$/],
+      exclude: /node_modules/,
+      loader: 'babel-loader'
+    },
+    {
+      test: /\.(js|html)$/,
+      exclude: /node_modules/,
+      loader: 'jsbeautify-loader',
+      enforce: 'pre'
+    } 
    ]
  },
  resolve: {
