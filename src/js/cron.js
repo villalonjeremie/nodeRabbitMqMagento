@@ -2,6 +2,8 @@
 var load = require('load-script')
 var cron = require('node-cron');
 var runScript = require('runscript');
+var assert = require("assert");
+
  
 console.log('sending messages... every minute');
 
