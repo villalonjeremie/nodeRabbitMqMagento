@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var amqp = require('amqplib');
-var JsonToSendMagento = {"sku":"BLGA3088-WH003","store_view_code":""};
+var JsonToSendMagento = {"sku":"BLGA3088-WH010","store_view_code":""};
 
 // var JsonToSendMagento = {"sku":"BLGA3088-WH001","store_view_code":"","attribute_set_code":"Migration_Default",
 // "product_type":null,"product_websites":"base","categories":"","name":"ALIKE SHORT SLV TOP",

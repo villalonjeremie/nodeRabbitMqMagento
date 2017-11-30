@@ -3,10 +3,10 @@
 var MongoClient = require("mongodb").MongoClient;
 var assert = require("assert");
 var Crud = require('./crud.js');
+var crud = new Crud();
 
 class Connect{
 	constructor(data) {
-		this.action = data.action;
 		this.collection = data.collection;
 		this.url = data.url;
 		this.db = data.db;
@@ -15,69 +15,94 @@ class Connect{
 		this.deleteOne = data.deleteOne;
 	}
 
-	actionToDb() {
-		var _this = this;
-		MongoClient.connect(_this.url, function(err, db) {
-		assert.equal(null, err);
-		console.log("Connecté à la base de données 'Mongo'");
-		switch (_this.action) {
-			case 'findDocuments':
-			    _this.findDocuments(db,_this.collection);
-			    break;
-			case 'insertDocuments':
-			    _this.insertDocuments(db,_this.collection,_this.insert);
-			    break;
-			case 'updateDocument':
-			    _this.updateDocument(db, _this.collection, _this.updateOne.change, _this.updateOne.set);
-			    break;
-			case 'deleteOneDocument':
-			    _this.deleteOneDocument(db,_this.collection, _this.deleteOne);
-			    break;
-			default:
-			    _this.errorReport();
-			    break;
-			}
-		});
+	actionToDb(data) {
+		return new Promise((resolve,reject) => {
+			this.insert = data.insert;
+			this.updateOne = data.updateOne;
+			this.deleteOne = data.deleteOne;
+			var self = this;
+
+			console.log('actionDbDEbut');
+
+			MongoClient.connect(self.url, (err, db) => {
+				console.log("Connecté à la base de données 'Mongo'");
+
+				if(err){
+					reject(err);
+				}
+
+				switch (self.action) {
+					case 'findDocuments':
+					    resolve(self.findDocuments(db,self.collection));
+					    break;
+					case 'insertDocuments':
+					    resolve(self.insertDocuments(db,self.collection,self.insert));
+					    break;
+					case 'updateDocument':
+					    resolve(self.updateDocument(db, self.collection, self.updateOne.change, self.updateOne.set));
+					    break;
+					case 'deleteOneDocument':
+					    resolve(self.deleteOneDocument(db,self.collection, self.deleteOne));
+					    break;
+					default:
+					    reject('No actions defined');
+					    break;
+				};
+			});
+		})
+		.then(() => {
+			console.log('actionDbFin');
+		})
+		.catch( err => {
+			console.log('err : ' + err); 
+		});;
 	}
 
 	findDocuments(db,collection){
-		let crud = new Crud();
-		crud.findDocuments(db, collection, function(){
+		return new Promise((resolve,reject) => {
+			resolve(crud.findDocuments(db, collection));
+		}).then(() => {
+			console.log('connection close');
 			db.close();
 		});
 	}
 
 	insertDocuments(db,collection,data) {
-		let crud = new Crud();
-		crud.insertDocuments(db, collection, data , function(){
-			crud.findDocuments(db, collection, function(){
-				db.close();
-			});
+		return new Promise((resolve,reject) => {
+			resolve(crud.insertDocuments(db, collection, data));
+		}).then(() => {
+			return crud.findDocuments(db,collection);
+		}).then(() => {
+			console.log('connection close');
+			db.close();
 		});
 	}
 
 	updateDocument(db, collection, changevalue, set) {
-		let crud = new Crud();
-		crud.updateDocument(db, collection , changevalue, set, function(){
-			crud.findDocuments(db, collection, function(){
-				db.close();
-			});
+		return new Promise((resolve,reject) => {
+			resolve(crud.updateDocument(db, collection , changevalue, set));
+		}).then(() => {
+			return crud.findDocuments(db,collection);
+		}).then(() => {
+			console.log('connection close');
+			db.close();
 		});
 	}
 
 	deleteOneDocument(db, collection, deletevalue) {
-		let crud = new Crud();
-		crud.deleteOneDocument(db, collection, deletevalue, function(){
-			crud.findDocuments(db, collection, function(){
-				db.close();
-			});
+		return new Promise((resolve,reject) => {
+			crud.deleteOneDocument(db, collection, deletevalue);
+		}).then(() => {
+			return crud.findDocuments(db,collection);
+		}).then(() => {
+			console.log('connection close');
+			db.close();
 		});
 	}
 
-	errorReport(){
-		console.log('No actions defined');
-	}
-
+    remove(){
+        delete this;
+    }
 }
 
 module.exports = Connect; 

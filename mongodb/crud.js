@@ -6,51 +6,78 @@ class Crud{
     this.props = props;
    }
   
-  findDocuments(db, collectionName, callback) {
-    this.isTypeString(collectionName);
-    var collection = db.collection(collectionName);
-
-    collection.find({}).toArray(function(err, docs) {
-      assert.equal(err, null);
+  findDocuments(db, collectionName) {
+    return new Promise((resolve,reject) => {
+      this.isTypeString(collectionName);
+      var collection = db.collection(collectionName);
+      var collectionNameDb= collection.find({}).toArray((err, results) => { 
+        if(err){
+          reject('error : ' + err);
+        }
+        resolve(results);   
+      });
+    }).then(results => {   
       console.log("Found the following records");
-      console.dir(docs);
-      callback(docs);
+      console.log(results);
+    }).catch( err => {
+      console.log(err); 
     });
   }
 
-  insertDocuments(db, collectionName, arrayValue, callback) {
-    this.isTypeString(collectionName);
-    this.isTypeArray(arrayValue);
-    var collection = db.collection(collectionName);
-
-    collection.insertMany(arrayValue, function(err, result) {
-      assert.equal(err, null);
-      console.log("Insert Many");
-      callback(result);
+  insertDocuments(db, collectionName, arrayValue) {
+    return new Promise((resolve,reject) => {
+      this.isTypeString(collectionName);
+      this.isTypeArray(arrayValue);
+      var collection = db.collection(collectionName);
+      collection.insertMany(arrayValue,(err, results) => {
+        if(err){
+          reject('error : ' + err);
+        }
+        resolve(results);  
+      });
+    }).then(results => {
+      console.log("Documents inserted");
+      console.log(results);
+    }).catch( err => {
+      console.log(err); 
     });
   }
 
 // change => { a : 2 }; set => { b : 1 } 
-  updateDocument(db, collectionName, change, set, callback) {
-    this.isTypeString(collectionName);
-    var collection = db.collection(collectionName);
-
-    collection.updateOne(change, { $set: set }, function(err, result) {
-      assert.equal(err, null);
-      console.log("Updated the document");
-      callback(result);
-    });  
+  updateDocument(db, collectionName, change, set) {
+    return new Promise((resolve,reject) => {
+      this.isTypeString(collectionName);
+      var collection = db.collection(collectionName);
+      collection.updateOne(change, { $set: set }, (err, result) => {
+        if(err){
+          reject('error : ' + err);
+        }
+        resolve(results);  
+      });
+    }).then(results => {
+      console.log("Document updated");
+      console.log(results);
+    }).catch( err => {
+      console.log(err); 
+    });
   }
 
 //deletevalue => { a : 3 }
-  deleteOneDocument(db, collectionName, deletevalue, callback) {
-    this.isTypeString(collectionName);
-    var collection = db.collection(collectionName);
-
-    collection.deleteOne(deletevalue, function(err, result) {
-      assert.equal(err, null);
-      console.log("Removed the document");
-      callback(result);
+  deleteOneDocument(db, collectionName, deletevalue) {
+    return new Promise((resolve,reject) => {
+      this.isTypeString(collectionName);
+      var collection = db.collection(collectionName);
+      collection.deleteOne(deletevalue, (err, result) => {
+        if(err){
+          reject('error : ' + err);
+        }
+        resolve(results);  
+      });
+    }).then(results => {
+      console.log("Document deleted");
+      console.log(results);
+    }).catch( err => {
+      console.log(err); 
     });
   }
 

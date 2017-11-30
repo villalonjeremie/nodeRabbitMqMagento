@@ -18311,28 +18311,45 @@ var Crud = function () {
 
     _createClass(Crud, [{
         key: "findDocuments",
-        value: function findDocuments(db, collectionName, callback) {
-            this.isTypeString(collectionName);
-            var collection = db.collection(collectionName);
+        value: function findDocuments(db, collectionName) {
+            var _this = this;
 
-            collection.find({}).toArray(function (err, docs) {
-                assert.equal(err, null);
+            return new Promise(function (resolve, reject) {
+                _this.isTypeString(collectionName);
+                var collection = db.collection(collectionName);
+                var collectionNameDb = collection.find({}).toArray(function (err, results) {
+                    if (err) {
+                        reject('error : ' + err);
+                    }
+                    resolve(results);
+                });
+            }).then(function (results) {
                 console.log("Found the following records");
-                console.dir(docs);
-                callback(docs);
+                console.log(results);
+            }).catch(function (err) {
+                console.log(err);
             });
         }
     }, {
         key: "insertDocuments",
-        value: function insertDocuments(db, collectionName, arrayValue, callback) {
-            this.isTypeString(collectionName);
-            this.isTypeArray(arrayValue);
-            var collection = db.collection(collectionName);
+        value: function insertDocuments(db, collectionName, arrayValue) {
+            var _this2 = this;
 
-            collection.insertMany(arrayValue, function (err, result) {
-                assert.equal(err, null);
-                console.log("Insert Many");
-                callback(result);
+            return new Promise(function (resolve, reject) {
+                _this2.isTypeString(collectionName);
+                _this2.isTypeArray(arrayValue);
+                var collection = db.collection(collectionName);
+                collection.insertMany(arrayValue, function (err, results) {
+                    if (err) {
+                        reject('error : ' + err);
+                    }
+                    resolve(results);
+                });
+            }).then(function (results) {
+                console.log("Documents inserted");
+                console.log(results);
+            }).catch(function (err) {
+                console.log(err);
             });
         }
 
@@ -18340,16 +18357,25 @@ var Crud = function () {
 
     }, {
         key: "updateDocument",
-        value: function updateDocument(db, collectionName, change, set, callback) {
-            this.isTypeString(collectionName);
-            var collection = db.collection(collectionName);
+        value: function updateDocument(db, collectionName, change, set) {
+            var _this3 = this;
 
-            collection.updateOne(change, {
-                $set: set
-            }, function (err, result) {
-                assert.equal(err, null);
-                console.log("Updated the document");
-                callback(result);
+            return new Promise(function (resolve, reject) {
+                _this3.isTypeString(collectionName);
+                var collection = db.collection(collectionName);
+                collection.updateOne(change, {
+                    $set: set
+                }, function (err, result) {
+                    if (err) {
+                        reject('error : ' + err);
+                    }
+                    resolve(results);
+                });
+            }).then(function (results) {
+                console.log("Document updated");
+                console.log(results);
+            }).catch(function (err) {
+                console.log(err);
             });
         }
 
@@ -18357,14 +18383,23 @@ var Crud = function () {
 
     }, {
         key: "deleteOneDocument",
-        value: function deleteOneDocument(db, collectionName, deletevalue, callback) {
-            this.isTypeString(collectionName);
-            var collection = db.collection(collectionName);
+        value: function deleteOneDocument(db, collectionName, deletevalue) {
+            var _this4 = this;
 
-            collection.deleteOne(deletevalue, function (err, result) {
-                assert.equal(err, null);
-                console.log("Removed the document");
-                callback(result);
+            return new Promise(function (resolve, reject) {
+                _this4.isTypeString(collectionName);
+                var collection = db.collection(collectionName);
+                collection.deleteOne(deletevalue, function (err, result) {
+                    if (err) {
+                        reject('error : ' + err);
+                    }
+                    resolve(results);
+                });
+            }).then(function (results) {
+                console.log("Document deleted");
+                console.log(results);
+            }).catch(function (err) {
+                console.log(err);
             });
         }
     }, {
